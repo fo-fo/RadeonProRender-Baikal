@@ -41,8 +41,8 @@ typedef struct
         // Position
         float3 p;
 
-        // Image plane width & height in current units
-        float2 dim;
+        // Image plane coordinates (x = left, y = right, z = bottom, w = top)
+        float4 sensor_coordinates;
         // Near and far Z
         float2 zcap;
         // Focal lenght

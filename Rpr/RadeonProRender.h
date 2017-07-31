@@ -1082,6 +1082,21 @@ extern RPR_API_ENTRY rpr_int rprCameraSetTransform(rpr_camera camera, rpr_bool t
  */
 extern RPR_API_ENTRY rpr_int rprCameraSetSensorSize(rpr_camera camera, rpr_float width, rpr_float height);
 
+/** @brief Set coordinates of the camera sensor.
+ *
+ *  Default sensor size is the one corresponding to full frame 36x24mm sensor
+ *  rprCameraSetSensorSize(camera, width, height) is equivalent to calling this function with
+ *  rprCameraSetSensorCoordinatesTUT(camera, -width/2*1000, width/2*1000, -height/2*1000, height/2*1000).
+ *
+ *  @param  camera  The camera to set transform for
+ *  @param  left    Left sensor coordinate in meters
+ *  @param  right   Right sensor coordinate in meters
+ *  @param  bottom  Bottom sensor coordinate in meters
+ *  @param  top     Top sensor coordinate in meters
+ *  @return         RPR_SUCCESS in case of success, error code otherwise
+ */
+extern RPR_API_ENTRY rpr_int rprCameraSetSensorCoordinatesTUT(rpr_camera camera, rpr_float left, rpr_float right, rpr_float bottom, rpr_float top);
+
 /** @brief Set camera transform in lookat form
  *
  *  @param  camera  The camera to set transform for

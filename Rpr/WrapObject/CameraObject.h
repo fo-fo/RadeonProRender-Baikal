@@ -50,6 +50,8 @@ public:
     void SetSensorSize(RadeonRays::float2 size) { m_cam->SetSensorSize(size * 0.001f); }
     RadeonRays::float2 GetSensorSize() { return m_cam->GetSensorSize() * 1000.f; }
 
+    void SetSensorCoordinates(RadeonRays::float4 const& coords) { m_cam->SetSensorCoordinates(coords); }
+
     void GetLookAt(RadeonRays::float3& eye,
                 RadeonRays::float3& at,
                 RadeonRays::float3& up);

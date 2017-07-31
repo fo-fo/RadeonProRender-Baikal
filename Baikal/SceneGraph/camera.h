@@ -76,6 +76,10 @@ namespace Baikal
         // This distinguishes APC-S vs full-frame, etc
         void SetSensorSize(RadeonRays::float2 const& size);
         RadeonRays::float2 GetSensorSize() const;
+
+        // Set camera sensor coordinates (x = left, y = right, z = bottom, w = top).
+        void SetSensorCoordinates(RadeonRays::float4 const& coords);
+        RadeonRays::float4 GetSensorCoordinates() const;
         
         // Set camera depth range.
         // Does not really make sence for physical camera
@@ -116,8 +120,8 @@ namespace Baikal
         RadeonRays::float3 m_up;
         RadeonRays::float3 m_p;
         
-        // Image plane width & hight in scene units
-        RadeonRays::float2 m_dim;
+        // Image plane coordinates in scene units
+        RadeonRays::float4 m_sensor_coordinates; // x = left, y = right, z = bottom, w = top
         
         // Near and far Z
         RadeonRays::float2 m_zcap;
@@ -165,13 +169,23 @@ namespace Baikal
     
     inline RadeonRays::float2 PerspectiveCamera::GetSensorSize() const
     {
-        return m_dim;
+        return RadeonRays::float2(m_sensor_coordinates.y - m_sensor_coordinates.x, m_sensor_coordinates.w - m_sensor_coordinates.z);
     }
     
     inline void PerspectiveCamera::SetSensorSize(RadeonRays::float2 const& size)
     {
-        m_dim = size;
+        SetSensorCoordinates(RadeonRays::float4(-size.x/2, size.x/2, -size.y/2, size.y/2));
         SetDirty(true);
+    }
+
+    inline void PerspectiveCamera::SetSensorCoordinates(RadeonRays::float4 const& coords)
+    {
+        m_sensor_coordinates = coords;
+    }
+
+    inline RadeonRays::float4 PerspectiveCamera::GetSensorCoordinates() const
+    {
+        return m_sensor_coordinates;
     }
     
     inline void PerspectiveCamera::SetDepthRange(RadeonRays::float2 const& range)

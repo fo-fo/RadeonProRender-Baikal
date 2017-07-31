@@ -728,6 +728,20 @@ rpr_int rprCameraSetSensorSize(rpr_camera in_camera, rpr_float in_width, rpr_flo
     return RPR_SUCCESS;
 }
 
+rpr_int rprCameraSetSensorCoordinatesTUT(rpr_camera in_camera, rpr_float left, rpr_float right, rpr_float bottom, rpr_float top)
+{
+    //cast data
+    CameraObject* camera = WrapObject::Cast<CameraObject>(in_camera);
+    if (!camera)
+    {
+        return RPR_ERROR_INVALID_PARAMETER;
+    }
+
+    camera->SetSensorCoordinates(RadeonRays::float4(left, right, bottom, top));
+
+    return RPR_SUCCESS;
+}
+
 rpr_int rprCameraLookAt(rpr_camera in_camera, rpr_float posx, rpr_float posy, rpr_float posz, rpr_float atx, rpr_float aty, rpr_float atz, rpr_float upx, rpr_float upy, rpr_float upz)
 {
     //cast data

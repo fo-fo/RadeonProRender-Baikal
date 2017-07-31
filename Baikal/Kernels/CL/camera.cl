@@ -96,10 +96,10 @@ void PerspectiveCamera_GeneratePaths(
         img_sample.x = (float)x / output_width + sample0.x / output_width;
         img_sample.y = (float)y / output_height + sample0.y / output_height;
 
-        // Transform into [-0.5, 0.5]
-        float2 h_sample = img_sample - make_float2(0.5f, 0.5f);
-        // Transform into [-dim/2, dim/2]
-        float2 c_sample = h_sample * camera->dim;
+        // Calculate sample in range [left, right] (horizontal) and [bottom, top] (vertical) of the image plane.
+        float2 c_sample = img_sample // Range [0, 1]
+            * (camera->sensor_coordinates.yw - camera->sensor_coordinates.xz) // To range [0, right-left] and [0, top-bottom].
+            +  camera->sensor_coordinates.xz; // To range [left, right] and [bottom, top].
 
         // Calculate direction to image plane
         my_ray->d.xyz = normalize(camera->focal_length * camera->forward + c_sample.x * camera->right + c_sample.y * camera->up);
@@ -189,10 +189,10 @@ KERNEL void PerspectiveCameraDof_GeneratePaths(
         img_sample.x = (float)x / output_width + sample0.x / output_width;
         img_sample.y = (float)y / output_height + sample0.y / output_height;
 
-        // Transform into [-0.5, 0.5]
-        float2 h_sample = img_sample - make_float2(0.5f, 0.5f);
-        // Transform into [-dim/2, dim/2]
-        float2 c_sample = h_sample * camera->dim;
+        // Calculate sample in range [left, right] (horizontal) and [bottom, top] (vertical) of the image plane.
+        float2 c_sample = img_sample // Range [0, 1]
+            * (camera->sensor_coordinates.yw - camera->sensor_coordinates.xz) // To range [0, right-left] and [0, top-bottom].
+            +  camera->sensor_coordinates.xz; // To range [left, right] and [bottom, top].
 
         // Generate sample on the lens
         float2 lens_sample = camera->aperture * Sample_MapToDiskConcentric(sample1);
@@ -296,10 +296,10 @@ void PerspectiveCamera_GenerateVertices(
         img_sample.x = (float)x / output_width + sample0.x / output_width;
         img_sample.y = (float)y / output_height + sample0.y / output_height;
 
-        // Transform into [-0.5, 0.5]
-        float2 h_sample = img_sample - make_float2(0.5f, 0.5f);
-        // Transform into [-dim/2, dim/2]
-        float2 c_sample = h_sample * camera->dim;
+        // Calculate sample in range [left, right] (horizontal) and [bottom, top] (vertical) of the image plane.
+        float2 c_sample = img_sample // Range [0, 1]
+            * (camera->sensor_coordinates.yw - camera->sensor_coordinates.xz) // To range [0, right-left] and [0, top-bottom].
+            +  camera->sensor_coordinates.xz; // To range [left, right] and [bottom, top].
 
         // Calculate direction to image plane
         my_ray->d.xyz = normalize(camera->focal_length * camera->forward + c_sample.x * camera->right + c_sample.y * camera->up);
@@ -410,10 +410,10 @@ void PerspectiveCameraDof_GenerateVertices(
         img_sample.x = (float)x / output_width + sample0.x / output_width;
         img_sample.y = (float)y / output_height + sample0.y / output_height;
 
-        // Transform into [-0.5, 0.5]
-        float2 h_sample = img_sample - make_float2(0.5f, 0.5f);
-        // Transform into [-dim/2, dim/2]
-        float2 c_sample = h_sample * camera->dim;
+        // Calculate sample in range [left, right] (horizontal) and [bottom, top] (vertical) of the image plane.
+        float2 c_sample = img_sample // Range [0, 1]
+            * (camera->sensor_coordinates.yw - camera->sensor_coordinates.xz) // To range [0, right-left] and [0, top-bottom].
+            +  camera->sensor_coordinates.xz; // To range [left, right] and [bottom, top].
 
         // Generate sample on the lens
         float2 lens_sample = camera->aperture * Sample_MapToDiskConcentric(sample1);
