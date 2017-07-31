@@ -546,7 +546,11 @@ __kernel void ShadeBackgroundEnvMap(
             output[pixelidx] = make_float4(100.f, 0.f, 0.f, 1.f);
         }
 
-        output[pixelidx].w += 1.f;
+        // Only update "number of samples" if hit a shape.
+        if (isects[globalid].shapeid >= 0)
+        {
+            output[pixelidx].w += 1.f;
+        }
     }
 }
 
