@@ -18,6 +18,11 @@ newoption {
     description = "Enable RadeonProRender API lib"
 }
 
+newoption {
+    trigger     = "embed_kernels",
+    description = "Embed CL kernels into binary module"
+}
+
 solution "Baikal"
 platforms {"x64"}
 configurations { "Debug", "Release" }

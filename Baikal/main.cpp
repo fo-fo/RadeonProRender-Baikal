@@ -60,7 +60,7 @@ THE SOFTWARE.
 #include <math.h>
 
 #ifdef RR_EMBED_KERNELS
-#include "./CL/cache/kernels.h"
+#include "./Kernels/CL/cache/kernels.h"
 #endif
 
 #include "CLW.h"

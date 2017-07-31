@@ -160,7 +160,12 @@ namespace Baikal
 
     // Constructor
     BdptRenderer::BdptRenderer(CLWContext context, int devidx, int num_bounces)
+    // TODO(fo): This has not been tested
+#ifndef RR_EMBED_KERNELS
         : ClwClass(context, "../Baikal/Kernels/CL/integrator_bdpt.cl")
+#else
+        : ClwClass(context, g_integrator_bdpt_opencl, true /* from_source */)
+#endif
         , m_render_data(new RenderData)
         , m_vidmemws(0)
         , m_scene_controller(context, devidx)

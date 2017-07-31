@@ -8,7 +8,7 @@ namespace Baikal
     class ClwClass
     {
     public:
-        ClwClass(CLWContext context, std::string const& cl_file);
+        ClwClass(CLWContext context, std::string const& cl_file, bool from_source = false);
         virtual ~ClwClass() = default;
         
     protected:
@@ -23,7 +23,7 @@ namespace Baikal
         std::string m_buildopts;
     };
     
-    inline ClwClass::ClwClass(CLWContext context, std::string const& cl_file)
+    inline ClwClass::ClwClass(CLWContext context, std::string const& cl_file, bool from_source)
     : m_context(context)
     {
         m_buildopts.append(" -cl-mad-enable -cl-fast-relaxed-math "
@@ -41,8 +41,14 @@ namespace Baikal
 #endif
                          );
         
-        m_program = CLWProgram::CreateFromFile(cl_file.c_str(),
-                                               m_buildopts.c_str(), m_context);
+        if (!from_source) // cl_file is a filename
+        {
+            m_program = CLWProgram::CreateFromFile(cl_file.c_str(), m_buildopts.c_str(), m_context);
+        }
+        else // cl_file contains the program source code.
+        {
+            m_program = CLWProgram::CreateFromSource(cl_file.c_str(), cl_file.size(), m_buildopts.c_str(), m_context);
+        }
     }
     
     inline CLWKernel ClwClass::GetKernel(std::string const& name)

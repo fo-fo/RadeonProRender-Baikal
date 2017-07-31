@@ -75,12 +75,20 @@ project "Baikal"
     else
         removefiles {"../App/main_benchmark.cpp"}
     end
-    -- if _OPTIONS["embed_kernels"] then
-    --      configuration {}
-    --      defines {"FR_EMBED_KERNELS"}
-    --      os.execute("python ../Tools/scripts/stringify.py ./CL/ > ./CL/cache/kernels.h")
---      print ">> App: CL kernels embedded"
---    end
+
+    -- TODO: This produces a lot of bloat because all #includes are expanded
+    --       in a not-so-smart way.
+    if _OPTIONS["embed_kernels"] then
+        configuration {}
+        defines {"RR_EMBED_KERNELS=1"}
+        os.execute( "python ../Tools/scripts/stringify.py " ..
+                            os.getcwd() .. "/../Baikal/Kernels/CL/ "  ..
+                            ".cl " ..
+                            "opencl " ..
+                                "> ./Kernels/CL/cache/kernels.h"
+                            )
+        print ">> Baikal: CL kernels embedded"
+    end
 
     if _OPTIONS["denoiser"] then
         defines{"ENABLE_DENOISER"}

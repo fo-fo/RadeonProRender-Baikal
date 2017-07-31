@@ -101,7 +101,11 @@ namespace Baikal
 
     // Constructor
     PtRenderer::PtRenderer(CLWContext context, int devidx, int num_bounces)
+#ifndef RR_EMBED_KERNELS
         : Baikal::ClwClass(context, "../Baikal/Kernels/CL/integrator_pt.cl")
+#else
+        : Baikal::ClwClass(context, g_integrator_pt_opencl, true /* from_source */)
+#endif
         , m_render_data(new RenderData)
         , m_vidmemws(0)
         , m_scene_controller(context, devidx)

@@ -65,6 +65,19 @@ project "Rpr"
         end
     end
 
+    -- TODO: This is duplicated here from Baikal.lua because RPR depends on Baikal
+    --       but compiles it separately, so we need the kernel cache to be up-to-date.
+    if _OPTIONS["embed_kernels"] then
+        configuration {}
+        defines {"RR_EMBED_KERNELS=1"}
+        os.execute( "python ../Tools/scripts/stringify.py " ..
+                            os.getcwd() .. "/../Baikal/Kernels/CL/ "  ..
+                            ".cl " ..
+                            "opencl " ..
+                                "> ./../Baikal/Kernels/CL/cache/kernels.h"
+                            )
+        print ">> Rpr(Baikal): CL kernels embedded"
+    end
 
     configuration {"x32", "Debug"}
         targetdir "../Bin/Debug/x86"
